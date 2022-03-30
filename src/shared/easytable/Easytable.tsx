@@ -12,12 +12,13 @@ export function Easytable(prop: { data: any, config: any }) {
 
     return (
         <TableContainer component={Paper}>
-            {prop.data && JSON.stringify(prop.data).substring(0, 10)}
+            {prop.data && JSON.stringify(prop.data).substring(0, 100)}
+            {JSON.stringify(prop.config.tablekeys).substring(0, 100)}
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         {prop.config.header.map((key: any) => (
-                            <TableCell key={key} align="right">{key}</TableCell>
+                            <TableCell align="right">{key}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -26,12 +27,20 @@ export function Easytable(prop: { data: any, config: any }) {
                         <TableRow
                             key={row.id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            onClick={() => dispatch(incrementByAmount(row.id))}
                         >
-                            <TableCell component="th" scope="row">
-                                {row.id}
-                            </TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">{row.symbol}</TableCell>
+
+                            {prop.config.tablekeys.map((tkey: any) => (
+
+                                // if(tkey==="image"){
+                                // <TableCell scope="row" ><img src={row[tkey]}></img></TableCell>
+                                // }else{
+                                <TableCell scope="row" >{row[tkey]}</TableCell>
+                                // }
+
+                            ))}
+                            {/* //   <TableCell align="right">{row.symbol}</TableCell>
+                        //     <TableCell align="right">{row.current_price}</TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

@@ -21,8 +21,8 @@ const initialState: CryptoState = {
 // typically used to make async requests.
 export const getGeckoAPI = createAsyncThunk(
     'counter/fetchCount',
-    async () => {
-        const response = await fetchCount();
+    async (currencycode: string) => {
+        const response = await fetchCount(currencycode);
 
         // The value we return becomes the `fulfilled` action payload
         return response.data;

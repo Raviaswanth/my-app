@@ -17,9 +17,9 @@ type GetCryptoMarket = {
 export function Cryptocurrency() {
     const crypto = useAppSelector(selectResponse);
     const dispatch = useAppDispatch();
-    const tableconfig = { header: ['Name', 'Symbol','Current Price'], keys: [] };
+    const tableconfig = { header: ['Name', 'Symbol','Current Price','imgage'], tablekeys: ['name', 'symbol', 'current_price','image' ] };
     useEffect(() => {
-        dispatch(getGeckoAPI())
+        dispatch(getGeckoAPI('jpy'));
     }, []);
     return (
         <>
