@@ -174,7 +174,7 @@ export function PrimarySearchAppBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+           NIMO CRYPTO
           </Typography>
           <Search>
             <SearchIconWrapper>

@@ -1,17 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { fetchCount } from './cryptoAPI';
+import { fetchCount,fetchParticularCrypto } from './cryptoAPI';
 
 export interface CryptoState {
     value: number;
     response: any;
-    status: 'idle' | 'loading' | 'failed';
+    status: 'idle' | 'loading' | 'failed' ;
+isParticularCoinLoaded: boolean;
 }
 
 const initialState: CryptoState = {
     value: 0,
     response: [],
     status: 'idle',
+isParticularCoinLoaded: false,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -29,6 +31,15 @@ export const getGeckoAPI = createAsyncThunk(
     }
 );
 
+export const getParticularCrypto = createAsyncThunk(
+    'counter/fetchParticularCrypto',
+    async (cryptoId: string) => {
+        const response = await fetchParticularCrypto(cryptoId);
+
+        return response.data;
+    }
+);
+
 export const counterSlice = createSlice({
     name: 'crypto',
     initialState,
@@ -41,8 +52,8 @@ export const counterSlice = createSlice({
             // immutable state based off those changes
             state.value += 1;
         },
-        decrement: (state) => {
-            state.value -= 1;
+        setParticularCryptoBoolean: (state) => {
+            state.isParticularCoinLoaded = true;
         },
         // Use the PayloadAction type to declare the contents of `action.payload`
         incrementByAmount: (state, action: PayloadAction<number>) => {
@@ -63,13 +74,14 @@ export const counterSlice = createSlice({
     },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { increment, setParticularCryptoBoolean, incrementByAmount } = counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectCount = (state: RootState) => state.crypto.value;
 export const selectResponse = (state: RootState) => state.crypto.response;
+export const selectisParticularCoinLoaded = (state: RootState) => state.crypto.isParticularCoinLoaded;
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

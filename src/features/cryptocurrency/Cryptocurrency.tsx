@@ -1,30 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Easytable } from '../../shared/easytable/Easytable';
+import { ParticularCryptoCard } from '../../shared/easytable/ParticularCrypto';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
-    decrement,
-    increment,
-    incrementByAmount,
+    setParticularCryptoBoolean,
+    
     getGeckoAPI,
-    incrementIfOdd,
+    
     selectResponse,
+    getParticularCrypto,
+    selectisParticularCoinLoaded
 } from './cryptoSlice';
 
 type GetCryptoMarket = {
-  vs_currency : string;
+    vs_currency: string;
 };
 
 export function Cryptocurrency() {
     const crypto = useAppSelector(selectResponse);
+    const isParticularCoinLoaded = useAppSelector(selectisParticularCoinLoaded);
+
     const dispatch = useAppDispatch();
-    const tableconfig = { header: ['Name', 'Symbol','Current Price','imgage'], tablekeys: ['name', 'symbol', 'current_price','image' ] };
+
+    const tableconfig = { header: ['', 'Name', 'Symbol', 'Current Price', 'Today Low', 'Today High', 'Mkt Cap'], tablekeys: ['image', 'name', 'symbol', 'current_price', 'low_24h', 'high_24h', 'market_cap_rank'] };
     useEffect(() => {
-        dispatch(getGeckoAPI('jpy'));
+        dispatch(getGeckoAPI('usd'));
     }, []);
     return (
         <>
-            <h1>Hello Crypto</h1>
-            {crypto.data && <Easytable data={crypto.data} config={tableconfig}></Easytable>}
+
+            {!isParticularCoinLoaded && crypto.data && <Easytable data={crypto.data} config={tableconfig} onRowClick={(rowId: any) => { dispatch(setParticularCryptoBoolean()); dispatch(getParticularCrypto(rowId.id)) }}></Easytable>}
+            {isParticularCoinLoaded && crypto.data && <ParticularCryptoCard ></ParticularCryptoCard>}
         </>
     );
 }
